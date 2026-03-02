@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=5,user-scalable=yes,viewport-fit=cover"/>
+<meta name="theme-color" content="#0a0e1a"/>
+<meta name="color-scheme" content="dark"/>
+<meta name="description" content="iKROX — Gestión inteligente de negocios"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="iKROX"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<title>iKROX — Tu negocio. Inteligente.</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:#0a0e1a;color:#f1f5f9;min-height:100vh;min-height:100dvh;overflow-x:hidden}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:rgba(99,102,241,.3);border-radius:3px}
+::selection{background:rgba(99,102,241,.3)}
+input,button{font-family:inherit}input::placeholder{color:#475569}
+@media print{body{display:none!important}}
+
+/* ═══ LOADING ═══ */
+#LS{position:fixed;inset:0;z-index:99999;background:linear-gradient(135deg,#0a0e1a,#1a1040,#0a0e1a);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .5s}
+#LS.gone{opacity:0;pointer-events:none}
+.ld-logo{width:72px;height:72px;border-radius:18px;background:linear-gradient(135deg,#6366f1,#8b5cf6);display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800;color:#fff;animation:pulse 2s ease-in-out infinite;box-shadow:0 0 30px rgba(99,102,241,.4)}
+.ld-bar{width:120px;height:3px;margin-top:24px;background:rgba(255,255,255,.06);border-radius:2px;overflow:hidden}
+.ld-fill{height:100%;width:30%;background:linear-gradient(90deg,#6366f1,#8b5cf6);border-radius:2px;animation:slide 1.5s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+@keyframes slide{0%{transform:translateX(-100%)}100%{transform:translateX(400%)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes glowPulse{0%,100%{box-shadow:0 0 20px rgba(99,102,241,.3)}50%{box-shadow:0 0 40px rgba(99,102,241,.6)}}
+
+/* ═══ PWA INSTALL ═══ */
+#PWA{position:fixed;inset:0;z-index:9999;background:linear-gradient(135deg,#0a0e1a,#1a1040,#0a0e1a);display:none;flex-direction:column;align-items:center;justify-content:center;padding:2rem;animation:fadeIn .5s}
+#PWA.show{display:flex}
+.pi-logo{width:90px;height:90px;border-radius:22px;background:linear-gradient(135deg,#6366f1,#8b5cf6);display:flex;align-items:center;justify-content:center;margin-bottom:1.5rem;animation:float 3s ease-in-out infinite;box-shadow:0 0 30px rgba(99,102,241,.4);font-size:36px;font-weight:800;color:#fff;letter-spacing:-1px}
+.pi-t{font-size:1.8rem;font-weight:800;margin-bottom:.5rem;background:linear-gradient(90deg,#f1f5f9,#a5b4fc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.pi-s{color:#94a3b8;font-size:.95rem;margin-bottom:2rem;text-align:center}
+.pi-feats{display:grid;gap:.75rem;margin-bottom:2rem;text-align:left;max-width:320px;width:100%}
+.pi-f{display:flex;align-items:center;gap:.75rem;padding:.6rem 1rem;background:rgba(255,255,255,.04);border-radius:12px;border:1px solid rgba(255,255,255,.06)}
+.pi-f i{font-size:1.2rem;font-style:normal}.pi-f span{font-size:.9rem;color:#cbd5e1}
+.pi-btns{display:flex;flex-direction:column;gap:.75rem;width:100%;max-width:320px;margin-top:1rem}
+.pi-install{width:100%;padding:1rem;border-radius:14px;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;font-weight:700;font-size:1rem;border:none;cursor:pointer;animation:glowPulse 2s ease-in-out infinite}
+.pi-skip{width:100%;padding:.85rem;border-radius:14px;background:rgba(255,255,255,.06);color:#94a3b8;font-weight:500;font-size:.9rem;border:1px solid rgba(255,255,255,.08);cursor:pointer}
+.pi-copy{position:absolute;bottom:1.5rem;color:#475569;font-size:.75rem}
+
+/* ═══ HEADER ═══ */
+.hdr{padding:1rem 1.25rem;border-bottom:1px solid rgba(255,255,255,.04);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;background:rgba(10,14,26,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.hdr-l{display:flex;align-items:center;gap:.75rem}
+.hdr-icon{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,#6366f1,#8b5cf6);display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:800;color:#fff;flex-shrink:0}
+.hdr h1{font-size:1rem;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;background:linear-gradient(90deg,#f1f5f9,#a5b4fc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hdr p{font-size:.65rem;color:#475569}
+.hdr-bell{width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:#94a3b8;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;position:relative}
+.hdr-badge{position:absolute;top:-2px;right:-2px;width:14px;height:14px;border-radius:50%;background:#f87171;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;color:#fff;border:2px solid #0a0e1a}
+
+/* ═══ TABS ═══ */
+.dtabs{padding:.75rem 1.25rem 0;display:flex;gap:.25rem;overflow-x:auto}
+@media(max-width:767px){.dtabs{display:none!important}}
+.tab{padding:.6rem 1rem;border-radius:10px;background:transparent;border:1px solid transparent;color:#64748b;font-weight:400;font-size:.8rem;cursor:pointer;display:flex;align-items:center;gap:6px;white-space:nowrap;transition:all .2s}
+.tab.on{background:rgba(99,102,241,.15);border-color:rgba(99,102,241,.3);color:#a5b4fc;font-weight:600}
+
+/* ═══ BOTTOM NAV ═══ */
+.bnav{position:fixed;bottom:0;left:0;right:0;display:flex;justify-content:space-around;align-items:center;padding:.5rem 0 calc(.5rem + env(safe-area-inset-bottom,0px));background:rgba(10,14,26,.95);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-top:1px solid rgba(255,255,255,.04);z-index:100}
+@media(min-width:768px){.bnav{display:none!important}}
+.bn{display:flex;flex-direction:column;align-items:center;gap:2px;background:none;border:none;cursor:pointer;font-size:.6rem;padding:4px 8px;position:relative;color:#475569;transition:color .2s}
+.bn.on{color:#a5b4fc;font-weight:600}
+.bn em{font-size:1.2rem;font-style:normal}
+.bn-dot{position:absolute;top:-4px;left:50%;transform:translateX(-50%);width:20px;height:3px;border-radius:2px;background:#6366f1;box-shadow:0 0 8px rgba(99,102,241,.4)}
+
+/* ═══ CONTENT ═══ */
+#MC{padding:1rem 1.25rem;padding-bottom:80px;animation:fadeIn .4s}
+@media(min-width:768px){#MC{padding-bottom:1.5rem}}
+
+/* ═══ CARD ═══ */
+.c{background:rgba(26,31,53,.8);border-radius:16px;border:1px solid rgba(255,255,255,.06);padding:1.25rem;transition:all .3s}
+.c.g{border-color:rgba(99,102,241,.25);box-shadow:0 0 20px rgba(99,102,241,.12)}
+.c.k{cursor:pointer}.c.k:active{transform:scale(.98)}
+
+/* ═══ STATS ═══ */
+.sg{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.75rem;margin-bottom:1.5rem}
+.si{display:flex;align-items:center;gap:.75rem}
+.si-i{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0}
+.si-v{font-size:1.5rem;font-weight:800;font-family:'JetBrains Mono',monospace;color:#f1f5f9;line-height:1.1}
+.si-l{font-size:.72rem;color:#64748b;margin-top:2px}
+.si-c{font-size:.68rem;margin-top:2px}
+
+/* ═══ HEALTH BAR ═══ */
+.hb{display:flex;align-items:center;gap:8px}
+.hb-t{flex:1;height:6px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden}
+.hb-f{height:100%;border-radius:3px;transition:width 1s ease}
+.hb-v{font-size:.7rem;font-family:'JetBrains Mono',monospace;min-width:28px}
+
+/* ═══ PRICE BADGE ═══ */
+.pb{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:8px;font-size:.7rem;font-family:'JetBrains Mono',monospace;font-weight:600}
+
+/* ═══ MISC ═══ */
+.sh{font-size:.9rem;font-weight:600;color:#94a3b8;margin-bottom:.75rem;text-transform:uppercase;letter-spacing:1px}
+.sh2{font-size:1.1rem;font-weight:700;color:#f1f5f9;margin-bottom:1rem}
+.mono{font-family:'JetBrains Mono',monospace}
+.gs{display:flex;flex-direction:column;gap:.5rem}
+.gm{display:flex;flex-direction:column;gap:.6rem}
+.fsb{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem}
+.fr{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem}
+.fl{display:flex;align-items:center;gap:.6rem}
+.mb1{margin-bottom:1rem}.mb15{margin-bottom:1.5rem}.mt1{margin-top:1rem}.mt15{margin-top:1.25rem}
+.pn{font-size:.85rem;font-weight:600;color:#e2e8f0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pm{font-size:.7rem;color:#64748b}
+.pp{font-family:'JetBrains Mono',monospace;font-weight:700;color:#f1f5f9}
+.abtn{padding:.5rem 1rem;border-radius:10px;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;font-weight:600;font-size:.8rem;border:none;cursor:pointer}
+.sbtn{padding:.6rem 1.5rem;border-radius:10px;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;font-weight:600;font-size:.85rem;border:none;cursor:pointer;white-space:nowrap}
+.sbar{position:relative;flex:1;max-width:400px}
+.sbar-i{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:#64748b;font-size:1rem}
+.sbar input{width:100%;padding:.6rem .75rem .6rem 2.2rem;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;color:#f1f5f9;font-size:.85rem;outline:none}
+.sbar input:focus{border-color:rgba(99,102,241,.5)}
+.sw{display:flex;gap:.5rem;flex-wrap:wrap}
+.bbtn{background:none;border:none;color:#94a3b8;font-size:.85rem;cursor:pointer;margin-bottom:1rem;display:flex;align-items:center;gap:4px}
+.dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.stb{font-size:.7rem;padding:2px 6px;border-radius:6px}
+.ptag{font-size:.65rem;padding:1px 6px;border-radius:4px}
+.al{padding:.85rem 1rem;border-left-width:3px;border-left-style:solid}
+.albtn{padding:4px 12px;border-radius:8px;font-size:.75rem;cursor:pointer;border:none}
+</style>
+</head>
+<body>
+
+<div id="LS"><div class="ld-logo">iK</div><div class="ld-bar"><div class="ld-fill"></div></div></div>
+
+<div id="PWA">
+<div class="pi-logo">iK</div>
+<div class="pi-t">iKROX</div>
+<div class="pi-s">Tu negocio. Inteligente.</div>
+<div id="pwaIOS" style="display:none;text-align:center;max-width:320px">
+<p style="font-size:1.1rem;font-weight:600;margin-bottom:1.5rem">Instala iKROX en tu iPhone</p>
+<div style="background:rgba(255,255,255,.05);border-radius:16px;padding:1.5rem;margin-bottom:1rem">
+<p style="margin-bottom:1rem">① Toca <span style="padding:4px 8px;background:rgba(99,102,241,.2);border-radius:8px;font-size:1.2rem">⬆️</span> en Safari</p>
+<p>② Selecciona "Agregar a inicio" <span style="padding:4px 8px;background:rgba(99,102,241,.2);border-radius:8px">➕</span></p>
+</div>
+</div>
+<div id="pwaAndroid" class="pi-feats">
+<div class="pi-f"><i>⚡</i><span>Acceso directo desde tu pantalla</span></div>
+<div class="pi-f"><i>📡</i><span>Funciona sin internet</span></div>
+<div class="pi-f"><i>🔔</i><span>Alertas de precios en tiempo real</span></div>
+<div class="pi-f"><i>🔄</i><span>Siempre actualizada</span></div>
+</div>
+<div class="pi-btns">
+<button class="pi-install" id="pwaIB" style="display:none" onclick="pwaInstall()">⚡ INSTALAR IKROX</button>
+<button class="pi-skip" onclick="pwaDismiss()">Continuar en navegador →</button>
+</div>
+<p class="pi-copy">© 2026 iKROX Technologies</p>
+</div>
+
+<div id="APP" style="display:none">
+<header class="hdr">
+<div class="hdr-l"><div class="hdr-icon">iK</div><div><h1>Inteligencia de Precios</h1><p>Módulo 2 • San Blas</p></div></div>
+<div class="hdr-bell">🔔<span class="hdr-badge">3</span></div>
+</header>
+<div class="dtabs" id="DT"></div>
+<div id="MC"></div>
+<nav class="bnav" id="BN"></nav>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+/* ═══ DATA ═══ */
+var S=[
+{n:'F. Guadalajara',t:'competition',h:95,p:1847,l:'2h',s:'ok',i:'💊'},
+{n:'F. Benavides',t:'competition',h:88,p:1523,l:'3h',s:'ok',i:'💊'},
+{n:'F. del Ahorro',t:'competition',h:92,p:1650,l:'4h',s:'ok',i:'💊'},
+{n:'Walmart',t:'wholesale',h:75,p:890,l:'6h',s:'part',i:'🏪'},
+{n:'Mercado Libre',t:'marketplace',h:100,p:2100,l:'1h',s:'ok',i:'🛒'},
+{n:'ALDROSA',t:'provider',h:100,p:3200,l:'12h',s:'ok',i:'📦'},
+{n:'Scorpion',t:'wholesale',h:90,p:950,l:'5h',s:'ok',i:'🦂'},
+{n:'Farmadepot',t:'provider',h:82,p:1100,l:'8h',s:'ok',i:'📦'}
+];
+var P=[
+{id:1,n:'Losartán 50mg c/30 tab',e:'7501075711234',b:'Bayer',mp:89.5,mc:52.3,ms:12,c:[{s:'Walmart',p:76.9,k:1,q:45},{s:'M. Libre',p:78,k:1},{s:'Guadalajara',p:82.5,k:1,q:30},{s:'Benavides',p:92,k:1,q:20}],v:[{s:'ALDROSA',c:48.5},{s:'Farmadepot',c:51.2}],cat:'Cardiovascular',cp:85},
+{id:2,n:'Omeprazol 20mg c/28 cap',e:'7501943412345',b:'Medix',mp:145,mc:78.5,ms:25,c:[{s:'del Ahorro',p:128,k:1,q:50},{s:'Guadalajara',p:135.5,k:1,q:15},{s:'Walmart',p:139,k:0,q:0},{s:'Benavides',p:155,k:1,q:35}],v:[{s:'ALDROSA',c:72},{s:'EQUILIBRIO',c:74.3}],cat:'Gastrointestinal',cp:92},
+{id:3,n:'Paracetamol 500mg c/20 tab',e:'7501075718901',b:'Genomma',mp:35,mc:15.2,ms:80,c:[{s:'Similares',p:22,k:1,q:100},{s:'del Ahorro',p:28.5,k:1,q:60},{s:'Guadalajara',p:32,k:1,q:45},{s:'Benavides',p:38,k:1,q:30}],v:[{s:'Scorpion',c:12.8},{s:'ALDROSA',c:13.5}],cat:'Analgésicos',cp:78},
+{id:4,n:'Metformina 850mg c/30 tab',e:'7501368900112',b:'Merck',mp:68,mc:38.9,ms:5,c:[{s:'del Ahorro',p:55,k:1,q:40},{s:'Walmart',p:62.5,k:1,q:25},{s:'Guadalajara',p:65,k:1,q:20},{s:'M. Libre',p:72,k:1}],v:[{s:'EQUILIBRIO',c:35.2},{s:'ALDROSA',c:36.8}],cat:'Diabetes',cp:88},
+{id:5,n:'Amoxicilina 500mg c/12 cap',e:'7501349024567',b:'Sanfer',mp:95,mc:55.8,ms:18,c:[{s:'Guadalajara',p:88,k:1,q:25},{s:'Benavides',p:92,k:1,q:15},{s:'del Ahorro',p:99,k:1,q:30},{s:'M. Libre',p:105,k:1}],v:[{s:'ALDROSA',c:50.2},{s:'Farmadepot',c:53.1}],cat:'Antibióticos',cp:81}
+];
+var PR=[
+{s:'Guadalajara',t:'3x2 en Vitaminas',e:'3 días',y:'3x2'},
+{s:'Benavides',t:'20% desc. Dermatológicos',e:'5 días',y:'d'},
+{s:'Walmart',t:'Bonificación Cuidado Personal',e:'1 día',y:'d'}
+];
+var NV=[{id:'overview',i:'📊',l:'Resumen'},{id:'compare',i:'⚔️',l:'Comparar'},{id:'search',i:'🔍',l:'Buscar'},{id:'promos',i:'🏷️',l:'Promos'},{id:'sources',i:'🔗',l:'Fuentes'}];
+
+var ct='overview',sp=null,sq='';
+
+/* ═══ UTILS ═══ */
+function $(s){return document.querySelector(s)}
+function el(t,c,h){var e=document.createElement(t);if(c)e.className=c;if(h)e.innerHTML=h;return e}
+function f2(n){return n.toFixed(2)}
+function mg(p,c){return((p-c)/c*100).toFixed(1)}
+function hb(sc){var c=sc>=80?'#34d399':sc>=50?'#fbbf24':'#f87171';return'<div class="hb"><div class="hb-t"><div class="hb-f" style="width:'+sc+'%;background:linear-gradient(90deg,'+c+'88,'+c+');box-shadow:0 0 8px '+c+'40"></div></div><span class="hb-v" style="color:'+c+'">'+sc+'%</span></div>'}
+function pb(my,cp){var d=((my-cp)/my*100).toFixed(1),lo=cp<my,sm=Math.abs(d)<3;var c=sm?'#fbbf24':lo?'#34d399':'#f87171';return'<span class="pb" style="color:'+c+';background:'+c+'15;border:1px solid '+c+'30">'+(sm?'≈':lo?'↓':'↑')+' '+(lo?'-':'+')+Math.abs(d)+'%</span>'}
+function tl(t){return t==='competition'?'Competencia':t==='provider'?'Proveedor':t==='marketplace'?'Marketplace':'Mayorista'}
+function minP(p){return Math.min.apply(null,p.c.map(function(x){return x.p}))}
+
+/* ═══ PWA ═══ */
+var dp=null;
+window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();dp=e;var b=$('#pwaIB');if(b)b.style.display='block'});
+window.addEventListener('appinstalled',function(){$('#PWA').classList.remove('show')});
+window.pwaInstall=function(){if(dp){dp.prompt();dp.userChoice.then(function(r){if(r.outcome==='accepted')$('#PWA').classList.remove('show');else pwaDismiss();dp=null})}};
+window.pwaDismiss=function(){try{localStorage.setItem('ikrox_d',Date.now()+'')}catch(e){}$('#PWA').classList.remove('show')};
+
+function initPWA(){
+  if(window.matchMedia('(display-mode:standalone)').matches||navigator.standalone)return;
+  var ua=navigator.userAgent;
+  if(/iPad|iPhone|iPod/.test(ua)){$('#pwaIOS').style.display='block';$('#pwaAndroid').style.display='none'}
+  try{var ts=localStorage.getItem('ikrox_d');if(ts&&(Date.now()-parseInt(ts))/86400000<7)return}catch(e){}
+  $('#PWA').classList.add('show');
+}
+
+/* ═══ NAV ═══ */
+function nav(){
+  var dt=$('#DT'),bn=$('#BN');dt.innerHTML='';bn.innerHTML='';
+  NV.forEach(function(x){
+    var tb=el('button','tab'+(ct===x.id?' on':''),'<span style="font-size:1rem">'+x.i+'</span> '+x.l);
+    tb.onclick=function(){ct=x.id;sp=null;R()};dt.appendChild(tb);
+    var bb=el('button','bn'+(ct===x.id?' on':''),'<em>'+x.i+'</em>'+x.l+(ct===x.id?'<div class="bn-dot"></div>':''));
+    bb.onclick=function(){ct=x.id;sp=null;R()};bn.appendChild(bb);
+  });
+}
+
+/* ═══ VIEWS ═══ */
+function vOverview(m){
+  var tt=S.reduce(function(a,x){return a+x.p},0);
+  var cc=P.reduce(function(a,x){return a+x.c.filter(function(c){return c.p<x.mp}).length},0);
+  m.innerHTML='';
+
+  var sg=el('div','sg');
+  [['\u{1F4E1}',tt.toLocaleString(),'Productos rastreados','+127 hoy','#34d399','#6366f1'],
+   ['\u26A0\uFE0F',cc,'Competencia más barata','Revisar','#f87171','#f87171'],
+   ['\u{1F3F7}\uFE0F',PR.length,'Promos activas','1 por vencer','#fbbf24','#fbbf24'],
+   ['\u{1F517}',S.length,'Fuentes activas','100% online','#34d399','#34d399']
+  ].forEach(function(d){
+    var cd=el('div','c','<div class="si"><div class="si-i" style="background:'+d[5]+'15">'+d[0]+'</div><div><div class="si-v">'+d[1]+'</div><div class="si-l">'+d[2]+'</div><div class="si-c" style="color:'+d[4]+'">'+d[3]+'</div></div></div>');
+    sg.appendChild(cd);
+  });
+  m.appendChild(sg);
+
+  m.appendChild(el('h3','sh','⚡ Alertas inteligentes'));
+  var al=el('div','gs mb15');
+  var a1=el('div','c al','<div style="font-size:.85rem;color:#e2e8f0"><strong>Walmart</strong> bajó <strong>Losartán 50mg</strong> a <span style="color:#34d399;font-weight:700">$76.90</span> — estás $12.60 arriba</div><div style="display:flex;gap:.5rem;margin-top:.5rem"><button class="albtn" style="background:rgba(99,102,241,.15);border:1px solid rgba(99,102,241,.3);color:#a5b4fc" id="alR">Revisar</button><button class="albtn" style="background:transparent;border:1px solid rgba(255,255,255,.08);color:#64748b">Ignorar</button></div>');
+  a1.style.borderLeftColor='#f87171';al.appendChild(a1);
+  var a2=el('div','c al','<div style="font-size:.85rem;color:#e2e8f0"><strong>Metformina 850mg</strong> — stock bajo: <span style="color:#fbbf24;font-weight:700">5 unidades</span>. EQUILIBRIO tiene a $35.20</div>');
+  a2.style.borderLeftColor='#fbbf24';al.appendChild(a2);
+  var a3=el('div','c al','<div style="font-size:.85rem;color:#e2e8f0"><strong>Guadalajara</strong> tiene <strong>3x2 en Vitaminas</strong> — vence en 3 días</div>');
+  a3.style.borderLeftColor='#22d3ee';al.appendChild(a3);
+  m.appendChild(al);
+
+  setTimeout(function(){var r=$('#alR');if(r)r.onclick=function(){sp=P[0];ct='compare';R()}},0);
+
+  m.appendChild(el('h3','sh','🎯 Productos a revisar'));
+  var pl=el('div','gs');
+  P.forEach(function(p,i){
+    var ch=minP(p);
+    var cd=el('div','c k','<div class="fr"><div style="min-width:0;flex:1"><div class="pn">'+p.n+'</div><div class="pm">'+p.b+' • Stock: '+p.ms+'</div></div><div style="display:flex;align-items:center;gap:.75rem;flex-shrink:0"><span class="pp">$'+f2(p.mp)+'</span>'+(ch<p.mp?pb(p.mp,ch):'')+'<span style="color:#475569">→</span></div></div>');
+    cd.onclick=function(){sp=p;ct='compare';R()};
+    pl.appendChild(cd);
+  });
+  m.appendChild(pl);
+}
+
+function vCompare(m){
+  m.innerHTML='';
+  if(sp)return vDetail(m,sp);
+  var sw=el('div','sw','<div class="sbar"><span class="sbar-i">🔍</span><input id="SI" placeholder="Buscar producto, marca o EAN..." value="'+sq+'"/></div>');
+  m.appendChild(sw);
+  m.appendChild(el('div','gs mt1','',''));
+  var ls=m.lastChild;ls.id='CL';
+  setTimeout(function(){var i=$('#SI');if(i)i.oninput=function(){sq=this.value;fList()}},0);
+  fList();
+}
+
+function fList(){
+  var ls=$('#CL');if(!ls)return;ls.innerHTML='';
+  var q=sq.toLowerCase();
+  P.filter(function(p){return!q||p.n.toLowerCase().indexOf(q)>-1||p.b.toLowerCase().indexOf(q)>-1||p.e.indexOf(q)>-1}).forEach(function(p){
+    var ch=minP(p);
+    var cd=el('div','c k','<div class="fr"><div style="min-width:0;flex:1"><div class="pn">'+p.n+'</div><div class="pm">'+p.b+' • '+p.cat+' • Stock: '+p.ms+'</div></div><div style="display:flex;align-items:center;gap:.5rem;flex-shrink:0"><div style="text-align:right"><div class="pp" style="font-size:1rem">$'+f2(p.mp)+'</div><div style="font-size:.65rem;color:#64748b">min: $'+f2(ch)+'</div></div>'+pb(p.mp,ch)+'</div></div>');
+    cd.onclick=function(){sp=p;R()};ls.appendChild(cd);
+  });
+}
+
+function vDetail(m,p){
+  m.innerHTML='';
+  var bk=el('button','bbtn','← Volver a lista');bk.onclick=function(){sp=null;R()};m.appendChild(bk);
+  m.appendChild(el('h2','',p.n,{style:'font-size:1.2rem;font-weight:700;color:#f1f5f9;margin-bottom:.3rem'}));
+  m.lastChild.style.cssText='font-size:1.2rem;font-weight:700;color:#f1f5f9;margin-bottom:.3rem';
+  m.appendChild(el('p','',p.b+' • '+p.cat+' • EAN: '+p.e));
+  m.lastChild.style.cssText='font-size:.8rem;color:#64748b;margin-bottom:1.5rem';
+
+  var mgv=mg(p.mp,p.mc);
+  var mp=el('div','c g','<div class="fr"><div><div style="font-size:.7rem;color:#a5b4fc;font-weight:600;text-transform:uppercase;letter-spacing:1px">★ MI PRECIO</div><div style="font-size:2rem;font-weight:800;font-family:JetBrains Mono,monospace;color:#f1f5f9">$'+f2(p.mp)+'</div></div><div style="text-align:right"><div style="font-size:.75rem;color:#94a3b8">Costo: <span class="mono" style="color:#f1f5f9">$'+f2(p.mc)+'</span></div><div style="font-size:.75rem;color:#94a3b8">Margen: <span style="color:'+(parseFloat(mgv)>20?'#34d399':'#fbbf24')+';font-weight:600">'+mgv+'%</span></div><div style="font-size:.75rem;color:#94a3b8">Stock: <span style="color:'+(p.ms<10?'#fbbf24':'#34d399')+';font-weight:600">'+p.ms+' uds</span></div></div></div>');
+  mp.style.marginBottom='1rem';mp.style.borderColor='rgba(99,102,241,.3)';m.appendChild(mp);
+
+  m.appendChild(el('h3','sh','Competencia'));
+  var cl=el('div','gs mb15');
+  p.c.slice().sort(function(a,b){return a.p-b.p}).forEach(function(c){
+    var df=((p.mp-c.p)/p.mp*100).toFixed(1),lo=c.p<p.mp,sm=Math.abs(parseFloat(df))<3;
+    var dc=sm?'#fbbf24':lo?'#34d399':'#f87171';
+    var cd=el('div','c');cd.style.padding='.85rem 1rem';
+    cd.innerHTML='<div class="fr"><div class="fl"><div class="dot" style="background:'+dc+';box-shadow:0 0 6px '+dc+'60"></div><span style="font-size:.9rem;font-weight:500;color:#e2e8f0">'+c.s+'</span></div><div style="display:flex;align-items:center;gap:.75rem"><span class="mono" style="font-size:1.1rem;font-weight:700;color:#f1f5f9">$'+f2(c.p)+'</span>'+pb(p.mp,c.p)+'<span class="stb" style="background:'+(c.k?'rgba(52,211,153,.1)':'rgba(248,113,113,.1)')+';color:'+(c.k?'#34d399':'#f87171')+'">'+(c.k?'✓'+(c.q?' '+c.q:''):'✗ Agotado')+'</span></div></div>';
+    cl.appendChild(cd);
+  });
+  m.appendChild(cl);
+
+  var bp=p.v.reduce(function(a,b){return a.c<b.c?a:b});
+  m.appendChild(el('h3','sh','Proveedores'));
+  var vl=el('div','gs mb15');
+  p.v.slice().sort(function(a,b){return a.c-b.c}).forEach(function(pr){
+    var m2=mg(p.mp,pr.c),best=pr.c===bp.c,cur=Math.abs(pr.c-p.mc)<.1;
+    var cd=el('div','c');cd.style.padding='.85rem 1rem';if(best)cd.style.borderColor='rgba(52,211,153,.2)';
+    cd.innerHTML='<div class="fr"><div class="fl"><span style="font-size:1rem">📦</span><span style="font-size:.9rem;font-weight:500;color:#e2e8f0">'+pr.s+'</span>'+(cur?'<span class="ptag" style="color:#64748b;background:rgba(255,255,255,.06)">ACTUAL</span>':'')+(best&&!cur?'<span class="ptag" style="color:#34d399;background:rgba(52,211,153,.1)">MEJOR</span>':'')+'</div><div style="display:flex;align-items:center;gap:.75rem"><span class="mono" style="font-size:1.1rem;font-weight:700;color:#f1f5f9">$'+f2(pr.c)+'</span><span class="mono" style="font-size:.7rem;color:#22d3ee">margen: '+m2+'%</span></div></div>';
+    vl.appendChild(cd);
+  });
+  m.appendChild(vl);
+
+  if(bp.c<p.mc){
+    var sv=f2(p.mc-bp.c),pc=((p.mc-bp.c)/p.mc*100).toFixed(1);
+    var tip=el('div','c','<div style="display:flex;align-items:flex-start;gap:.6rem"><span style="font-size:1.2rem">💡</span><div><div style="font-size:.85rem;font-weight:600;color:#34d399;margin-bottom:4px">Recomendación</div><div style="font-size:.8rem;color:#cbd5e1">Cambiar a <strong>'+bp.s+'</strong> ahorraría <strong style="color:#34d399">$'+sv+'</strong>/unidad ('+pc+'% menos en costo)</div></div></div>');
+    tip.style.background='rgba(52,211,153,.05)';tip.style.borderColor='rgba(52,211,153,.15)';m.appendChild(tip);
+  }
+
+  var cw=el('div','mt15','<div class="fsb" style="margin-bottom:4px"><span style="font-size:.7rem;color:#64748b">Datos del producto</span><span style="font-size:.7rem;color:#64748b">'+p.cp+'%</span></div>'+hb(p.cp));
+  m.appendChild(cw);
+}
+
+function vSources(m){
+  m.innerHTML='';
+  var hd=el('div','fsb mb1','<h3 class="sh2" style="margin-bottom:0">Fuentes activas</h3>');
+  hd.appendChild(el('button','abtn','+ Agregar fuente'));m.appendChild(hd);
+  var ls=el('div','gm');
+  S.forEach(function(s){
+    var cd=el('div','c');cd.style.padding='1rem';
+    cd.innerHTML='<div class="fr"><div class="fl" style="gap:.75rem;min-width:0"><span style="font-size:1.5rem">'+s.i+'</span><div style="min-width:0"><div style="font-size:.9rem;font-weight:600;color:#e2e8f0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+s.n+'</div><div class="pm">'+tl(s.t)+' • '+s.p.toLocaleString()+' productos • hace '+s.l+'</div></div></div><div style="display:flex;align-items:center;gap:1rem"><div style="width:80px">'+hb(s.h)+'</div><div class="dot" style="background:'+(s.s==='ok'?'#34d399':s.s==='part'?'#fbbf24':'#f87171')+';box-shadow:0 0 6px '+(s.s==='ok'?'#34d399':'#fbbf24')+'60"></div></div></div>';
+    ls.appendChild(cd);
+  });
+  m.appendChild(ls);
+}
+
+function vPromos(m){
+  m.innerHTML='';
+  m.appendChild(el('h3','sh2','Promociones activas de la competencia'));
+  var ls=el('div','gm');
+  PR.forEach(function(p){
+    var d=parseInt(p.e);
+    var cd=el('div','c');cd.style.padding='1rem';cd.style.borderLeft='3px solid '+(p.y==='3x2'?'#8b5cf6':'#22d3ee');
+    cd.innerHTML='<div class="fr"><div><div style="font-size:.9rem;font-weight:600;color:#e2e8f0">'+p.t+'</div><div style="font-size:.75rem;color:#94a3b8;margin-top:2px">'+p.s+'</div></div><span style="font-size:.7rem;padding:3px 8px;border-radius:8px;font-weight:600;white-space:nowrap;background:'+(d<=2?'rgba(248,113,113,.1)':'rgba(251,191,36,.1)')+';color:'+(d<=2?'#f87171':'#fbbf24')+'">⏰ '+p.e+'</span></div>';
+    ls.appendChild(cd);
+  });
+  m.appendChild(ls);
+}
+
+function vSearch(m){
+  m.innerHTML='';
+  m.appendChild(el('h3','sh2','Búsqueda externa'));
+  var cd=el('div','c','<p style="font-size:.85rem;color:#94a3b8;margin-bottom:1rem">Busca un producto en todas las fuentes activas en tiempo real.</p><div class="sw"><div class="sbar"><span class="sbar-i">🔍</span><input placeholder="Nombre, EAN o marca..."/></div><button class="sbtn">🔍 Buscar</button></div><div style="margin-top:1rem;padding:2rem;text-align:center;color:#475569;font-size:.85rem">Escribe un término y buscaremos en '+S.length+' fuentes activas</div>');
+  m.appendChild(cd);
+}
+
+/* ═══ RENDER ═══ */
+function R(){
+  nav();
+  var m=$('#MC');
+  if(ct==='overview'){sp=null;vOverview(m)}
+  else if(ct==='compare')vCompare(m);
+  else if(ct==='sources')vSources(m);
+  else if(ct==='promos')vPromos(m);
+  else if(ct==='search')vSearch(m);
+}
+
+/* ═══ INIT ═══ */
+document.addEventListener('DOMContentLoaded',function(){
+  initPWA();
+  R();
+  var ls=$('#LS');
+  if(ls){ls.classList.add('gone');setTimeout(function(){ls.remove()},600)}
+  $('#APP').style.display='block';
+});
+
+})();
+</script>
+</body>
+</html>
